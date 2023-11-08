@@ -6,14 +6,14 @@ using namespace std;
 
 void Create(int** a, const int rowCount, const int colCount, const int Low, const int High, int i, int j);
 void Print(int** a, const int rowCount, const int colCount, int i, int j);
-void FindMax(int** a, const int n, int& max, int i);
+void Find(int** a, const int n, int& min, int i);
 
 int main()
 {
 	srand((unsigned)time(NULL));
 	int Low = -42;
 	int High = 51;
-	int max;
+	int min;
 	int rowCount = 4;
 	int colCount = 4;
 	int** a = new int* [rowCount];
@@ -21,8 +21,10 @@ int main()
 		a[i] = new int[colCount];
 	Create(a, rowCount, colCount, Low, High, 0, 0);
 	Print(a, rowCount, colCount, 0, 0);
-	FindMax(a, rowCount, max, 0);
-	cout << endl << "max = " << max << endl;
+	Find(a, rowCount, min, 0);
+	cout << endl << "min = " << min << endl;
+	for (int i = 0; i < rowCount; i++)
+		delete[] a[i];
 	delete[] a;
 	return 0;
 }
@@ -57,18 +59,22 @@ void Print(int** a, const int rowCount, const int colCount, int i, int j)
 	}
 }
 
-void FindMax(int** a, const int n, int& max, int i)
+void Find(int** a, const int n, int& min, int i)
 {
 	if (i == n) // коли досягли кінця діагоналі
 	{
 		return;
 	}
 
-	if (a[i][i] > max)
-	{
-		max = a[i][i]; // якщо знайдений більший елемент
+	if (i == 0) {
+		min = a[i][i];
 	}
 
-	FindMax(a, n, max, i + 1); // виклик для наступного елементу діагоналі
+	if (a[i][i] < min)
+	{
+		min = a[i][i]; // якщо знайдений менший елемент
+	}
+
+	Find(a, n, min, i + 1); // виклик для наступного елементу діагоналі
 }
 
